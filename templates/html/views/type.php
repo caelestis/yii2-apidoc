@@ -91,12 +91,14 @@ $renderer = $this->context;
 </div>
 
 <a id="properties"></a>
-<?= $this->render('@yii/apidoc/templates/html/views/propertySummary', ['type' => $type, 'protected' => false]) ?>
-<?= $this->render('@yii/apidoc/templates/html/views/propertySummary', ['type' => $type, 'protected' => true]) ?>
+<?= $this->render('@yii/apidoc/templates/html/views/propertySummary', ['type' => $type, 'property_type' => 'public']) ?>
+<?= $this->render('@yii/apidoc/templates/html/views/propertySummary', ['type' => $type, 'property_type' => 'private']) ?>
+<?= $this->render('@yii/apidoc/templates/html/views/propertySummary', ['type' => $type, 'property_type' => 'protected']) ?>
 
 <a id="methods"></a>
-<?= $this->render('@yii/apidoc/templates/html/views/methodSummary', ['type' => $type, 'protected' => false]) ?>
-<?= $this->render('@yii/apidoc/templates/html/views/methodSummary', ['type' => $type, 'protected' => true]) ?>
+<?= $this->render('@yii/apidoc/templates/html/views/methodSummary', ['type' => $type, 'property_type' => 'public']) ?>
+<?= $this->render('@yii/apidoc/templates/html/views/methodSummary', ['type' => $type, 'property_type' => 'private']) ?>
+<?= $this->render('@yii/apidoc/templates/html/views/methodSummary', ['type' => $type, 'property_type' => 'protected']) ?>
 
 <a id="events"></a>
 <?= $this->render('@yii/apidoc/templates/html/views/eventSummary', ['type' => $type]) ?>

@@ -7,18 +7,32 @@ use yii\apidoc\models\TraitDoc;
 use yii\helpers\ArrayHelper;
 
 /* @var $type ClassDoc|InterfaceDoc|TraitDoc */
-/* @var $protected bool */
 /* @var $this yii\web\View */
 /* @var $renderer \yii\apidoc\templates\html\ApiRenderer */
+/* @var $property_type string */
 
 $renderer = $this->context;
 
-if ($protected && count($type->getProtectedMethods()) == 0 || !$protected && count($type->getPublicMethods()) == 0) {
+if ($property_type == 'public' && count($type->getPublicMethods()) == 0) {
     return;
-} ?>
+}
+if ($property_type == 'private' && count($type->getPrivateMethods()) == 0) {
+    return;
+}
+if ($property_type == 'protected' && count($type->getProtectedMethods()) == 0) {
+    return;
+}?>
 
 <div class="summary doc-method">
-<h2><?= $protected ? 'Protected Methods' : 'Public Methods' ?></h2>
+<h2>
+    <?php if ($property_type == 'public'): ?>
+        Public Methods
+    <?php elseif ($property_type == 'private'): ?>
+        Private Methods
+    <?php elseif ($property_type == 'protected'): ?>
+        Protected Methods
+    <?php endif;?>
+</h2>
 
 <p><a href="#" class="toggle">Hide inherited methods</a></p>
 
@@ -35,13 +49,11 @@ if ($protected && count($type->getProtectedMethods()) == 0 || !$protected && cou
 $methods = $type->methods;
 ArrayHelper::multisort($methods, 'name');
 foreach ($methods as $method): ?>
-    <?php if ($protected && $method->visibility == 'protected' || !$protected && $method->visibility != 'protected'): ?>
     <tr<?= $method->definedBy != $type->name ? ' class="inherited"' : '' ?> id="<?= $method->name ?>()">
         <td><?= $renderer->createSubjectLink($method, $method->name.'()') ?></td>
         <td><?= ApiMarkdown::process($method->shortDescription, $method->definedBy, true) ?></td>
         <td><?= $renderer->createTypeLink($method->definedBy, $type) ?></td>
     </tr>
-    <?php endif; ?>
 <?php endforeach; ?>
 </table>
 </div>

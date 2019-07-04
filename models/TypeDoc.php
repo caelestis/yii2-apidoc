@@ -98,6 +98,14 @@ class TypeDoc extends BaseDoc
     /**
      * @return MethodDoc[]
      */
+    public function getPrivateMethods()
+    {
+        return $this->getFilteredMethods('private');
+    }
+
+    /**
+     * @return MethodDoc[]
+     */
     public function getProtectedMethods()
     {
         return $this->getFilteredMethods('protected');
@@ -149,6 +157,14 @@ class TypeDoc extends BaseDoc
     }
 
     /**
+     * @return PropertyDoc[]
+     */
+    public function getPrivateProperties()
+    {
+        return $this->getFilteredProperties('private');
+    }
+
+    /**
      * @param null $visibility
      * @param null $definedBy
      * @return PropertyDoc[]
@@ -195,19 +211,15 @@ class TypeDoc extends BaseDoc
         }
 
         foreach ($reflector->getProperties() as $propertyReflector) {
-            if ($propertyReflector->getVisibility() != 'private') {
-                $property = new PropertyDoc($propertyReflector, $context, ['sourceFile' => $this->sourceFile]);
-                $property->definedBy = $this->name;
-                $this->properties[$property->name] = $property;
-            }
+            $property = new PropertyDoc($propertyReflector, $context, ['sourceFile' => $this->sourceFile]);
+            $property->definedBy = $this->name;
+            $this->properties[$property->name] = $property;
         }
 
         foreach ($reflector->getMethods() as $methodReflector) {
-            if ($methodReflector->getVisibility() != 'private') {
-                $method = new MethodDoc($methodReflector, $context, ['sourceFile' => $this->sourceFile]);
-                $method->definedBy = $this->name;
-                $this->methods[$method->name] = $method;
-            }
+            $method = new MethodDoc($methodReflector, $context, ['sourceFile' => $this->sourceFile]);
+            $method->definedBy = $this->name;
+            $this->methods[$method->name] = $method;
         }
     }
 }
