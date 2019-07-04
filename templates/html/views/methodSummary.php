@@ -49,11 +49,13 @@ if ($property_type == 'protected' && count($type->getProtectedMethods()) == 0) {
 $methods = $type->methods;
 ArrayHelper::multisort($methods, 'name');
 foreach ($methods as $method): ?>
+    <?php if ($method->visibility == $property_type): ?>
     <tr<?= $method->definedBy != $type->name ? ' class="inherited"' : '' ?> id="<?= $method->name ?>()">
         <td><?= $renderer->createSubjectLink($method, $method->name.'()') ?></td>
         <td><?= ApiMarkdown::process($method->shortDescription, $method->definedBy, true) ?></td>
         <td><?= $renderer->createTypeLink($method->definedBy, $type) ?></td>
     </tr>
+    <?php endif; ?>
 <?php endforeach; ?>
 </table>
 </div>
